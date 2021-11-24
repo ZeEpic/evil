@@ -1,0 +1,22 @@
+name: Evil
+version: '${project.version}'
+main: me.zeepic.evil.Main
+api-version: 1.17
+authors: [ ZeEpic ]
+libraries:
+  - com.github.shynixn.structureblocklib:structureblocklib-bukkit-api:2.2.2
+  - com.github.shynixn.structureblocklib:structureblocklib-bukkit-core:2.2.2
+depend:  ['Multiverse-Core']
+loadbefore: ['Multiverse-Core']
+commands:
+  discord:
+    usage: /<command>
+    description: Get the Discord server link using this command.
+  start:
+    usage: /<command>
+    description: Starts a new game of zombie survival.
+    permission: op
+  temp:
+    usage: /<command>
+    description: Temporary command.
+    permission: op
