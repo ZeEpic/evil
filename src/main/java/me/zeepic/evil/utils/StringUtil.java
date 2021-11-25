@@ -10,7 +10,7 @@ public class StringUtil {
         return Arrays
                 .stream(split)
                 .map(part ->
-                        part.substring(0, 1).toUpperCase() + part.substring(1))
+                        part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase())
                 .collect(Collectors.joining(" "));
     }
 

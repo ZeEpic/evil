@@ -1,11 +1,10 @@
 package me.zeepic.evil.listeners;
 
+import me.zeepic.evil.Main;
 import me.zeepic.evil.utils.Item;
 import me.zeepic.evil.utils.PlayerUtil;
 import me.zeepic.evil.utils.ZombieLoot;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +13,7 @@ import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTable;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.List;
 import java.util.Random;
 
 public class DeathListener implements Listener {
@@ -31,6 +31,22 @@ public class DeathListener implements Listener {
                 zombie.getEquipment().setHelmet(new Item(Material.PLAYER_HEAD, player.getName()).customHead(player));
                 player.getInventory().clear();
                 event.setCancelled(true);
+
+                List<Player> alivePlayers = Bukkit
+                        .getOnlinePlayers()
+                        .stream()
+                        .filter(p ->
+                                !p.getWorld().getName().equals("world")
+                                && p.getGameMode().equals(GameMode.ADVENTURE))
+                        .map(Player::getPlayer)
+                        .toList();
+
+                if (alivePlayers.size() == 1) {
+                    Main.endGame(alivePlayers.get(0));
+                } else if (alivePlayers.isEmpty()) { // Just in case...
+                    Main.endGame(null);
+                }
+
             }
             case ZOMBIE -> {
                 event.getDrops().clear();

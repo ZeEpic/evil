@@ -16,6 +16,10 @@ commands:
     usage: /<command>
     description: Starts a new game of zombie survival.
     permission: op
+  end:
+    usage: /<command>
+    description: Ends the current game of zombie survival.
+    permission: op
   temp:
     usage: /<command>
     description: Temporary command.

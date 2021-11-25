@@ -1,8 +1,6 @@
 package me.zeepic.evil.listeners;
 
-import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import me.zeepic.evil.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,7 +24,7 @@ public class PlayerListener implements Listener {
             if (!player.getWorld().getName().equals("world"))
                 return;
             if (event.getCause().equals(EntityDamageEvent.DamageCause.VOID))
-                player.teleport(new Location(Bukkit.getWorld("world"), -8, 71, -2));
+                player.teleport(Main.SPAWN_LOCATION);
             event.setCancelled(true);
         }
     }

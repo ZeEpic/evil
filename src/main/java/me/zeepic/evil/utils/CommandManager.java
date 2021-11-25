@@ -69,6 +69,7 @@ public class CommandManager {
                     ).withAmount(100));
 
         }));
+        addCommand("end", new SimpleCommand(Main.getInstance(), player -> Main.endGame(null)));
         addCommand("discord", new SimpleCommand(Main.getInstance(), player -> {
             PlayerUtil.message(player, " ");
             PlayerUtil.message(player, " ");

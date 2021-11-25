@@ -5,9 +5,7 @@ import me.zeepic.evil.models.GunState;
 import me.zeepic.evil.utils.PlayerUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
@@ -24,15 +22,16 @@ public class JoinListener implements Listener {
         Player player = event.getPlayer();
         event.joinMessage(Component.text(" + ").color(NamedTextColor.DARK_GREEN).append(Component.text(player.getName()).color(NamedTextColor.GRAY)));
         PlayerUtil.message(player, "&a&oWelcome to &c&oEvil >:)");
+        PlayerUtil.message(player, "&3Join the Discord server with &b/discord");
         if (player.isOp())
             PlayerUtil.message(player, "&a&oDo &6&o/start &a&oto start a new game of zombie survival.");
         else
             PlayerUtil.message(player, "&a&oWait for an admin to do &6&o/start &a&oto start a new game of zombie survival.");
         setAttackSpeed(player);
-        player.teleport(new Location(Bukkit.getWorld("world"), -8, 71, -2));
+        player.teleport(Main.SPAWN_LOCATION);
         player.setHealth(20);
         player.setFoodLevel(20);
-        player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
+        Main.removeEffects(player);
         if (!player.getGameMode().equals(GameMode.CREATIVE))
             player.getInventory().clear();
         player.setGameMode(GameMode.ADVENTURE);
