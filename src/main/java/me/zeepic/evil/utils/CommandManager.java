@@ -5,6 +5,7 @@ import me.zeepic.evil.Main;
 import me.zeepic.evil.commands.SimpleCommand;
 import me.zeepic.evil.listeners.EntitySpawnListener;
 import me.zeepic.evil.models.GunState;
+import me.zeepic.evil.models.Modifier;
 import me.zeepic.evil.world.SimpleChunkGenerator;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -14,12 +15,10 @@ import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.List;
 import java.util.Random;
 
 public class CommandManager {
@@ -68,6 +67,7 @@ public class CommandManager {
                             Material.IRON_NUGGET,
                             "Bullet"
                     ).withAmount(100));
+
         }));
         addCommand("discord", new SimpleCommand(Main.getInstance(), player -> {
             PlayerUtil.message(player, " ");
@@ -104,29 +104,12 @@ public class CommandManager {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100000, 10, false, false, false));
         player.setGameMode(GameMode.ADVENTURE);
         player.getInventory().clear();
-        ItemStack item = new ItemStack(Material.IRON_SWORD);
-        Damageable meta = (Damageable) item.getItemMeta();
-        item.setItemMeta(configureMeta(meta, "Dagger", true, false, 200));
+        Item item = new Item(Material.IRON_SWORD, "Dagger").customModifiers(List.of(
+                Modifier.BLOODY,
+                Modifier.DULL,
+                Modifier.RUSTY
+        ));
         player.getInventory().setItem(0, item);
-    }
-
-    public static Damageable configureMeta(Damageable meta, String name, boolean clean, boolean rusty, int damage) {
-        meta.setDamage(damage);
-        Component component = Component.text("");
-        if (clean)
-            component = component.append(Component.text("§fClean "));
-        else
-            component = component.append(Component.text("§fBloody "));
-        if (rusty)
-            component = component.append(Component.text("§fRusty "));
-        component = component.append(Component.text(name));
-
-        meta.displayName(component);
-        meta.getPersistentDataContainer().set(new NamespacedKey(Main.getInstance(), "clean"), PersistentDataType.BYTE, clean ? (byte) 1 : (byte) 0);
-        meta.getPersistentDataContainer().set(new NamespacedKey(Main.getInstance(), "rusty"), PersistentDataType.BYTE, rusty ? (byte) 1 : (byte) 0);
-        meta.getPersistentDataContainer().set(new NamespacedKey(Main.getInstance(), "damaged"), PersistentDataType.BYTE, damage == 0 ? (byte) 0 : (byte) 1);
-
-        return meta;
     }
 
 }

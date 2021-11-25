@@ -1,9 +1,9 @@
 package me.zeepic.evil.utils;
 
 import lombok.Getter;
+import me.zeepic.evil.models.Modifier;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -143,4 +144,41 @@ public class Item extends ItemStack {
         }
         return this;
     }
+
+    public List<Modifier> customModifiers() {
+        String[] split = ChatColor.stripColor(getName()).split(" ");
+        List<Modifier> modifiers = new ArrayList<>();
+        for (int i = 0; i < split.length - 1; i++) { // last element is the name of the tool, ex. "Dagger"
+            modifiers.add(Modifier.valueOf(split[i]));
+        }
+        return modifiers;
+    }
+
+    public Item customModifiers(List<Modifier> modifiers) {
+        String[] split = ChatColor.stripColor(getName()).split(" ");
+        StringBuilder newName = new StringBuilder();
+        modifiers.forEach(mod -> newName
+                .append(ChatColor.WHITE)
+                .append(StringUtil.titleCase(mod.name()))
+                .append(" ")
+        );
+        newName.append(split[split.length - 1]); // default name
+        setName(newName.toString());
+
+        return this;
+    }
+
+    public Item withCustomModifier(Modifier modifier) {
+        List<Modifier> mods = customModifiers();
+        if (!mods.contains(modifier))
+            mods.add(modifier);
+        return customModifiers(mods);
+    }
+
+    public Item withoutCustomModifier(Modifier modifier) {
+        List<Modifier> mods = customModifiers();
+        mods.removeIf(mod -> mod.equals(modifier));
+        return customModifiers(mods);
+    }
+
 }

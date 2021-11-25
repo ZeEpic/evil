@@ -9,6 +9,7 @@ import me.zeepic.evil.tasks.HungerTask;
 import me.zeepic.evil.tasks.SoundTask;
 import me.zeepic.evil.utils.CommandManager;
 import me.zeepic.evil.world.SimpleChunkGenerator;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.PluginManager;
@@ -55,6 +56,9 @@ public final class Main extends JavaPlugin {
 
         getServer().getScheduler().runTaskTimer(this, new HungerTask(), hungerTaskDelay * 20L, hungerTaskDelay * 20L);
         getServer().getScheduler().runTaskTimer(this, new SoundTask(), soundTaskDelay * 17L, soundTaskDelay * 19L);
+
+        // for testing
+        Bukkit.getOnlinePlayers().forEach(player -> gunStates.put(player.getUniqueId(), GunState.CAN_FIRE));
 
     }
 

@@ -1,0 +1,7 @@
+package me.zeepic.evil.models;
+
+public enum Modifier {
+
+    CLEAN, BLOODY, RUSTY, DULL, CRUDE, BROKEN, EXOTIC, REINFORCED, SHARP, SHINY, ADMIN, FORGOTTEN, HEAVY, LIGHT, QUICK, SLOW, AVERAGE
+
+}

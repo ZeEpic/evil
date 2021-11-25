@@ -7,6 +7,7 @@ import me.zeepic.evil.utils.Item;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -19,6 +20,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 
 public class BlockClickListener implements Listener {
@@ -30,10 +32,14 @@ public class BlockClickListener implements Listener {
         assert event.getHand() != null;
         if (event.getHand().equals(EquipmentSlot.OFF_HAND))
             return;
-        Component name = event.getPlayer().getInventory().getItemInMainHand().displayName();
-        if (name.contains(Component.text("Gun"))) {
-            fireGun(name, event.getPlayer());
-            return;
+        ItemMeta meta = event.getPlayer().getInventory().getItemInMainHand().getItemMeta();
+        Component component = meta.displayName();
+        if (component != null) {
+            String name = PlainTextComponentSerializer.plainText().serialize(component);
+            if (name.contains("Gun")) {
+                fireGun(name, event.getPlayer());
+                return;
+            }
         }
         Block block = event.getClickedBlock();
         if (block == null)
@@ -57,7 +63,7 @@ public class BlockClickListener implements Listener {
         block.setType(Material.AIR);
     }
 
-    private void fireGun(Component name, Player player) {
+    private void fireGun(String name, Player player) {
         GunState state = Main.getGunStates().get(player.getUniqueId());
         if (state.isAbleToFire() || player.getGameMode().equals(GameMode.CREATIVE)) {
             Item bullet = new Item(Material.IRON_NUGGET, "Bullet");
